@@ -1,0 +1,37 @@
+<!doctype html>
+<html>
+<head>
+  <title>ImageDrive V2</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 40px; }
+    .gallery { display: flex; flex-wrap: wrap; gap: 20px; }
+    .image-card { border: 1px solid #ccc; padding: 10px; text-align: center; width: 200px; }
+    .image-card img { width: 100%; height: auto; border-radius: 4px; }
+    .delete-form { margin-top: 10px; }
+  </style>
+</head>
+<body>
+
+<h1>Upload Images</h1>
+<form method="POST" action="/upload" enctype="multipart/form-data">
+  <input type="file" name="file" accept="image/*" multiple required>
+  <input type="submit" value="Upload">
+</form>
+
+<h2>Stored Images</h2>
+<div class="gallery">
+  {% for obj in objects %}
+    <div class="image-card">
+      <a href="{{ url_for('view_image', filename=obj.Key) }}" target="_blank">
+        <img src="{{ url_for('view_image', filename=obj.Key) }}" alt="{{ obj.Key }}">
+      </a>
+      <p>{{ obj.Key }}<br><small>{{ obj.LastModified.strftime('%Y-%m-%d %H:%M:%S') }}</small></p>
+      <form class="delete-form" method="POST" action="{{ url_for('delete_image', filename=obj.Key) }}">
+        <button type="submit">Delete</button>
+      </form>
+    </div>
+  {% endfor %}
+</div>
+
+</body>
+</html>
