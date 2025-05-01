@@ -1,0 +1,28 @@
+auth_enabled: false  # Set to true if using authentication with RADOS Gateway
+
+server:
+  http_listen_port: 3100
+  grpc_listen_port: 9095
+
+storage_config:
+  aws:
+    s3: s3://logbucket
+    access_key_id: foo
+    secret_access_key: bar
+    endpoint: http://10.0.2.15:80
+    region: us-east-1
+    insecure: true  # Set to true if you're not using HTTPS for the RADOS Gateway
+
+schema_config:
+  configs:
+    - from: "2022-01-01"
+      store: "boltdb_shipper"
+      object_store: "s3"
+      schema: "v11"
+      index:
+        prefix: "index_"
+        period: "168h"
+
+compactor:
+  working_directory: /tmp/loki/compactor
+  shared_store: s3
