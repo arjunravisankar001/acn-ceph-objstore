@@ -8,7 +8,7 @@ app = Flask(__name__)
 # Ceph RGW credentials
 s3 = boto3.client(
     's3',
-    endpoint_url='http://10.0.2.15:80',  # your RGW endpoint
+    endpoint_url='http://10.0.2.15:80',  # RGW endpoint
     aws_access_key_id='foo',
     aws_secret_access_key='bar',
     region_name='us-east-1'
@@ -32,7 +32,7 @@ def view_image(filename):
     img = s3.get_object(Bucket=BUCKET, Key=filename)
     return send_file(
         io.BytesIO(img['Body'].read()),
-        mimetype='image/jpeg',  # or detect dynamically
+        mimetype='image/jpeg',  
         download_name=filename
     )
 
